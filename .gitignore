@@ -1,0 +1,19 @@
+# Build outputs
+bin/
+obj/
+
+# Development files
+.idea/
+.vscode/
+*.user
+*.suo
+
+# Temporary Avalonia files
+*.axaml.cs~
+
+# System files
+Thumbs.db
+*.DS_STORE
+
+# Logs
+*.log
