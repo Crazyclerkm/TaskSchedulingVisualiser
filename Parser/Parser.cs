@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 class ParsedNode(string id, Dictionary<string, string> attributes)
 {
@@ -76,7 +75,6 @@ public class Parser
         Expect(TokenType.LeftBrace);
 
         Dictionary<string, ParsedNode> nodeMap = [];
-        // TODO: Change to a dictionary for faster processing of larger graphs
         List<ParsedEdge> edgeList = [];
         Dictionary<string, string> graphAttributes = [];
 
