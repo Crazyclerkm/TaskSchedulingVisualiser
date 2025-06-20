@@ -93,7 +93,7 @@ public class Parser
             graph.Nodes[taskNode.Name] = taskNode;
         }
 
-        Dictionary<(string, string), Edge> edgeMap = [];
+        Dictionary<(TaskNode, TaskNode), Edge> edgeMap = [];
 
         foreach (ParsedEdge edge in edgeList)
         {
@@ -102,10 +102,11 @@ public class Parser
                 throw new Exception($"Edge from {edge.From} to {edge.To} refers to invalid node(s).");
             }
 
-            (string, string) key = (fromNode.Name, toNode.Name);
+            //(string, string) key = (fromNode.Name, toNode.Name);
+            (TaskNode, TaskNode) key = (fromNode, toNode);
             if (graph.isStrict)
             {
-                
+
                 if (edgeMap.TryGetValue(key, out var existingEdge))
                 {
                     foreach (var keyValue in edge.Attributes) existingEdge.Attributes[keyValue.Key] = keyValue.Value;
@@ -113,17 +114,21 @@ public class Parser
                 else
                 {
                     Edge graphEdge = new(fromNode, toNode) { Attributes = edge.Attributes };
+                    fromNode.Successors.Add(graphEdge);
+                    toNode.Predecessors.Add(graphEdge);
                     edgeMap[key] = graphEdge;
                 }
             }
             else
             {
                 Edge graphEdge = new(fromNode, toNode) { Attributes = edge.Attributes };
+                fromNode.Successors.Add(graphEdge);
+                toNode.Predecessors.Add(graphEdge);
                 edgeMap[key] = graphEdge;
             }
         }
 
-        graph.Edges = [.. edgeMap.Values];
+        graph.Edges = edgeMap;
         graph.Attributes = graphAttributes;
         
         return graph;
